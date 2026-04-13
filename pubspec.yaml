@@ -1,0 +1,13 @@
+name: calculadora_imc_dio
+description: Calculadora de IMC em Dart para desafio da DIO.
+version: 1.0.0
+repository: https://github.com/Dev-GustavoRibeiro/calculadora-imc-dio
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6
