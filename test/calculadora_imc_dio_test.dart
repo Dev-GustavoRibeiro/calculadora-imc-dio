@@ -32,6 +32,26 @@ void main() {
       );
     });
 
+    test('converte registro para Map e restaura do Map', () {
+      final registro = RegistroIMC(
+        nome: 'Gustavo',
+        calculo: IMC(peso: 70, altura: 1.75),
+        criadoEm: DateTime.parse('2026-05-29T03:00:00.000'),
+      );
+
+      final map = registro.toMap();
+      final restaurado = RegistroIMC.fromMap(map);
+
+      expect(map['nome'], equals('Gustavo'));
+      expect(map['peso'], equals(70));
+      expect(map['altura'], equals(1.75));
+      expect(map['classificacao'], equals('Peso normal'));
+      expect(restaurado.nome, equals('Gustavo'));
+      expect(restaurado.peso, equals(70));
+      expect(restaurado.altura, equals(1.75));
+      expect(restaurado.imc, closeTo(22.86, 0.01));
+    });
+
     test('remove espacos extras do nome', () {
       final registro = RegistroIMC(
         nome: '  Gustavo  ',

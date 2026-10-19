@@ -19,6 +19,17 @@ class RegistroIMC {
     : nome = validarTexto(nome, 'nome'),
       criadoEm = criadoEm ?? DateTime.now();
 
+  factory RegistroIMC.fromMap(Map<dynamic, dynamic> map) {
+    return RegistroIMC(
+      nome: validarTexto(map['nome']?.toString(), 'nome'),
+      calculo: IMC(
+        peso: _converterNumeroPersistido(map['peso'], 'peso'),
+        altura: _converterNumeroPersistido(map['altura'], 'altura'),
+      ),
+      criadoEm: DateTime.tryParse(map['criadoEm']?.toString() ?? '') ?? DateTime.now(),
+    );
+  }
+
   final String nome;
   final IMC calculo;
   final DateTime criadoEm;
@@ -32,6 +43,17 @@ class RegistroIMC {
   String get imcFormatado => calculo.valorFormatado;
 
   String get classificacao => calculo.classificacao;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'nome': nome,
+      'peso': peso,
+      'altura': altura,
+      'imc': imc,
+      'classificacao': classificacao,
+      'criadoEm': criadoEm.toIso8601String(),
+    };
+  }
 
   String resultadoFormatado() {
     return '$nome, seu IMC é $imcFormatado - $classificacao.';
@@ -170,4 +192,13 @@ void validarNumeroPositivo(num valor, String campo) {
       'O campo $campo deve ser maior que zero.',
     );
   }
+}
+
+double _converterNumeroPersistido(dynamic valor, String campo) {
+  if (valor is num) {
+    validarNumeroPositivo(valor, campo);
+    return valor.toDouble();
+  }
+
+  return converterEntradaNumerica(valor?.toString(), campo);
 }
